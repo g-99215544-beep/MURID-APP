@@ -19,7 +19,7 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 export const subscribeToApps = (callback: (apps: SchoolApp[]) => void) => {
-  const appsRef = ref(database, 'apps');
+  const appsRef = ref(database, 'muridapps');
   return onValue(appsRef, (snapshot) => {
     const data = snapshot.val();
     const loadedApps: SchoolApp[] = [];
@@ -37,21 +37,21 @@ export const subscribeToApps = (callback: (apps: SchoolApp[]) => void) => {
 };
 
 export const addNewApp = async (newApp: Omit<SchoolApp, 'id'>) => {
-  const newAppRef = push(ref(database, 'apps'));
+  const newAppRef = push(ref(database, 'muridapps'));
   await set(newAppRef, newApp);
 };
 
 export const updateApp = async (appId: string, updates: Partial<SchoolApp>) => {
-  const appRef = ref(database, `apps/${appId}`);
+  const appRef = ref(database, `muridapps/${appId}`);
   await update(appRef, updates);
 };
 
 export const removeApp = async (appId: string) => {
-  await remove(ref(database, `apps/${appId}`));
+  await remove(ref(database, `muridapps/${appId}`));
 };
 
 export const incrementAppAccess = async (appId: string) => {
-  const countRef = ref(database, `apps/${appId}/accessCount`);
+  const countRef = ref(database, `muridapps/${appId}/accessCount`);
   await runTransaction(countRef, (currentCount) => {
     return (currentCount || 0) + 1;
   });
